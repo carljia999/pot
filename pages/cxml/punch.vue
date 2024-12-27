@@ -12,7 +12,12 @@
           <AccordionPanel value="1">
               <AccordionHeader>cXML Viewer</AccordionHeader>
               <AccordionContent>
-                <XmlViewer :xml="xml" />
+                <ClientOnly>
+                  <XmlViewer :xml="xml" />
+                  <template #fallback>
+                    <div>Loading...</div>
+                  </template>
+                </ClientOnly>
               </AccordionContent>
           </AccordionPanel>
           <AccordionPanel value="2">
@@ -31,12 +36,18 @@
 </template>
 
 <script lang="ts" setup>
-import XmlViewer from 'vue3-xml-viewer';
 import * as xml2js from 'xml2js';
+
+// XmlViewer is not available on the server side
+const XmlViewer = defineAsyncComponent(() => 
+  import('vue3-xml-viewer')
+)
+useNuxtApp().provide('XmlViewer', XmlViewer)
+
 const parser = new xml2js.Parser({explicitArray: false});
 
 const form = useMyFormData();
-const xml = useState("cXML", () => form.value['cXML'].replace(/<!DOCTYPE[^>]+>/,""));
+const xml = computed(() => form.value['cXML']?.replace(/<!DOCTYPE[^>]+>/,""));
 const success = useState<boolean>('Success')
 const url = useState<string>('StartingURL')
 
