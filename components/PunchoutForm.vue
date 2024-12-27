@@ -27,16 +27,16 @@
 </template>
 
 <script lang="ts" setup>
-import { FetchError } from 'ofetch'
 
 const punchoutUrl = ref('');
 const username = ref('');
 const password = ref('');
 const cXMLInput = ref('');
+const toast = useToast();
 
 async function submitForm() {
   try {
-    const response = await $fetch<{statusCode: string, data: string}>('/api/cxml', {
+    const response = await $fetch<{statusCode: string, data: string, message?: string}>('/api/cxml', {
       method: 'POST',
       redirect: 'manual',
       body: {
@@ -47,18 +47,17 @@ async function submitForm() {
     });
 
     const form = useMyFormData();
-    form.value['cXML'] = response.data;
-  } catch (error) {
-    if (error instanceof FetchError && (error.response?.status === 301 || error.response?.status === 302)) {
-      const redirectUrl = error.response.headers.get('location')
-      if (redirectUrl) {
-        window.location.href = redirectUrl; // Redirect to the third-party URL
-      }
-    } else {
-      console.error(error);
+    if (response.statusCode === '200') {
+      form.value['cXML'] = response.data;
+      await navigateTo('/cxml/punch');
     }
+    else {
+      toast.add({ severity: 'info', summary: 'error', detail: response.message, life: 3000 });
+      console.error(response.message);
+    }
+  } catch (error) {
+    toast.add({ severity: 'info', summary: 'error', detail: error, life: 3000 });
+    console.error(error);
   }
-
-  await navigateTo('/cxml/punch');
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <AppHeader />
+  <Toast />
   <NuxtPage />
 </template>
 
