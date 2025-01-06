@@ -1,25 +1,33 @@
 <template>
   <div>
     <Form @submit="submitForm">
-      <div class="flex flex-row gap-8">
-        <div class="flex flex-col gap-2 w-96">
-          <label for="punchoutUrl">Punchout URL:</label>
-          <InputText id="punchoutUrl" v-model="punchoutUrl"/>
+      <Tabs value="0">
+          <TabList>
+              <Tab value="0">Basic</Tab>
+              <Tab value="1">Advanced</Tab>
+          </TabList>
+          <TabPanels>
+              <TabPanel value="0">
+                <div class="flex flex-col gap-2 w-96">
+                  <label for="punchoutUrl">Punchout URL:</label>
+                  <InputText id="punchoutUrl" v-model="punchoutUrl"/>
 
-          <label for="username">Username:</label>
-          <InputText id="username" v-model="username"/>
+                  <label for="username">Username:</label>
+                  <InputText id="username" v-model="username"/>
 
-          <label for="password">Password:</label>
-          <InputText id="password" v-model="password"/>
-        </div>
-        <div>Or:</div>
-        <div class="flex flex-col gap-2">
-          <label for="punchoutUrl">Input cXML:</label>
-          <Textarea v-model="cXMLInput" style="width: 600px; height: 400px;" />
-        </div>
-      </div>
-
-      <div class="flex px-16 py-8">
+                  <label for="password">Password:</label>
+                  <InputText id="password" v-model="password"/>
+                </div>
+              </TabPanel>
+              <TabPanel value="1">
+                <div class="flex flex-col gap-2 w-96">
+                  <label>Input cXML: <Textarea v-model="cXMLInput" style="width: 600px; height: 360px;" /></label>
+                  <label><Checkbox v-model="replacingUrl" binary /> Replace Hook URL</label>
+                </div>
+              </TabPanel>
+          </TabPanels>
+      </Tabs>
+      <div class="flex px-16">
         <Button type="submit" class="w-24">Submit</Button>
       </div>
     </Form>
@@ -33,6 +41,7 @@ const username = ref('');
 const password = ref('');
 const cXMLInput = ref('');
 const toast = useToast();
+const replacingUrl = ref(true);
 
 async function submitForm() {
   try {
