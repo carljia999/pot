@@ -1,28 +1,16 @@
 <template>
-  <NuxtLayout>
-    <header>
-      <h1>Punch Out Application</h1>
-      <nav>
-        <ul>
-          <li><nuxt-link to="/cxml">cXML Punchout</nuxt-link></li>
-          <li><nuxt-link to="/oci">OCI Punchout</nuxt-link></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <slot />
-    </main>
-    <footer>
-      <p>&copy; 2023 Punch Out Application</p>
-    </footer>
-  </NuxtLayout>
+  <header class="flex flex-col gap-4">
+    <Panel header="Supported methods">
+      <ul>
+        <li><nuxt-link to="/cxml">cXML Punchout</nuxt-link></li>
+        <li><nuxt-link to="/oci">OCI Punchout</nuxt-link></li>
+      </ul>
+    </Panel>
+    <Panel header="Resources">
+      <nuxt-link to="https://punchoutcommerce.com/" external>punchoutcommerce</nuxt-link>
+    </Panel>
+  </header>
 </template>
-
-<script lang="ts">
-export default {
-  layout: 'default',
-}
-</script>
 
 <style scoped>
 header {
@@ -31,19 +19,13 @@ header {
   text-align: center;
 }
 
-nav ul {
+ul {
   list-style-type: none;
   padding: 0;
 }
 
-nav ul li {
+ul li {
   display: inline;
   margin: 0 1rem;
-}
-
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #f8f9fa;
 }
 </style>

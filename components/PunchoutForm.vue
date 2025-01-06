@@ -36,7 +36,7 @@ const toast = useToast();
 
 async function submitForm() {
   try {
-    const response = await $fetch<{statusCode: string, data: string, message?: string}>('/api/cxml', {
+    const response = await $fetch<{statusCode: number, data: string, message?: string}>('/api/cxml', {
       method: 'POST',
       redirect: 'manual',
       body: {
@@ -47,7 +47,7 @@ async function submitForm() {
     });
 
     const form = useMyFormData();
-    if (response.statusCode === '200') {
+    if (response.statusCode === 200) {
       form.value['cXML'] = response.data;
       await navigateTo('/cxml/punch');
     }
