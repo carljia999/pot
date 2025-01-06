@@ -1,7 +1,8 @@
 <template>
-  <AppHeader />
   <Toast />
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script setup>

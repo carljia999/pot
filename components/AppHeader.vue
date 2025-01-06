@@ -2,7 +2,7 @@
     <header class="header">
         <Toolbar pt:center:class="gap-2">
             <template #start>
-                <i class="pi pi-shop text-xl"/>
+                <i class="pi pi-shop text-3xl text-teal-700"/>
             </template>
 
             <template #center>
