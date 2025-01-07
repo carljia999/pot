@@ -36,7 +36,7 @@
 </template>
 
 <script lang="ts" setup>
-import { readBody, readMultipartFormData } from 'h3';
+import { isMethod, readFormData } from 'h3';
 // XmlViewer is not available on the server side
 const XmlViewer = defineAsyncComponent(() => 
   import('vue3-xml-viewer')
@@ -49,27 +49,14 @@ const event = useRequestEvent()
 const form = useState<MyFormData>('form-data', () => ({}));
 const cxml = ref('');
 
-if (event) {
-  // Check if it's a multipart form request
-  const contentType = event.headers.get('content-type') || ''
-  if (!contentType.includes('multipart/form-data')) {
-    const body = await readBody(event) as MyFormData;
-    form.value = body
-  } else {
-    // Read multipart form data
-    const formData = await readMultipartFormData(event)
-    if (formData) {
-      // Process form data
-      const processedData: MyFormData = {}
-
-      formData.forEach(part => {
-        if (part.name) {
-          processedData[part.name] = part.data.toString()
-        }
-      })
-      form.value = processedData
-    }
+if (event && isMethod(event, 'POST')) {
+  const formData = await readFormData(event)
+  // Process form data
+  const processedData: MyFormData = {}
+  for(const [name, value] of formData.entries()) {
+    processedData[name] = value.toString()
   }
+  form.value = processedData
 }
 
 onMounted(() => {
