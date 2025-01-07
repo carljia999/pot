@@ -37,17 +37,12 @@
 
 <script lang="ts" setup>
 import { isMethod, readFormData } from 'h3';
-// XmlViewer is not available on the server side
-const XmlViewer = defineAsyncComponent(() => 
-  import('vue3-xml-viewer')
-)
-useNuxtApp().provide('XmlViewer', XmlViewer)
-
-const event = useRequestEvent()
 
 // Store in useState for components to access
 const form = useState<MyFormData>('form-data', () => ({}));
 const cxml = ref('');
+
+const event = useRequestEvent()
 
 if (event && isMethod(event, 'POST')) {
   const formData = await readFormData(event)

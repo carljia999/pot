@@ -38,12 +38,6 @@
 <script lang="ts" setup>
 import * as xml2js from 'xml2js';
 
-// XmlViewer is not available on the server side
-const XmlViewer = defineAsyncComponent(() => 
-  import('vue3-xml-viewer')
-)
-useNuxtApp().provide('XmlViewer', XmlViewer)
-
 const parser = new xml2js.Parser({explicitArray: false});
 
 const form = useMyFormData();

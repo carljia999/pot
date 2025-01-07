@@ -24,4 +24,10 @@ useHead({
     { rel: 'manifest', href: '/site.webmanifest' }
   ]
 })
+
+// XmlViewer is not available on the server side
+const XmlViewer = defineAsyncComponent(() => 
+  import('vue3-xml-viewer')
+)
+useNuxtApp().vueApp.component('XmlViewer', XmlViewer)
 </script>
