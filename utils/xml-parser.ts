@@ -1,4 +1,4 @@
-export function createXML(payload: string, date: string, username: string, password: string, punchoutUrl: string): string {
+export function createXML(payload: string, date: string, username: string, password: string, punchoutUrl: string, hookUrl: string): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.1.007/cXML.dtd">
 <cXML version="1.1.007" xml:lang="en-US" payloadID="${payload}" timestamp="$date">
@@ -29,7 +29,7 @@ export function createXML(payload: string, date: string, username: string, passw
             <Extrinsic name="FirstName">John</Extrinsic>
             <Extrinsic name="LastName">Spence</Extrinsic>
             <BrowserFormPost>
-                <URL>HOOK PLACEHOLDER</URL>
+                <URL>${hookUrl}</URL>
             </BrowserFormPost>
             <Contact role="endUser">
                 <Name xml:lang="en-US">John Spence</Name>
@@ -43,14 +43,3 @@ export function createXML(payload: string, date: string, username: string, passw
 </cXML>`
 }
 
-export function parseXML(xmlString: string): Document {
-    const parser = new DOMParser()
-    const xmlDoc = parser.parseFromString(xmlString, 'application/xml')
-
-    const parserError = xmlDoc.getElementsByTagName('parsererror')
-    if (parserError.length) {
-        throw new Error('Error parsing XML: ' + parserError[0].textContent)
-    }
-
-    return xmlDoc
-}

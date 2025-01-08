@@ -51,7 +51,9 @@ async function submitForm() {
       body: {
         punchoutUrl: punchoutUrl.value,
         username: username.value,
-        password: password.value
+        password: password.value,
+        rawXml: cXMLInput.value,
+        replacing: replacingUrl.value,
       }
     });
 
