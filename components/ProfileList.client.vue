@@ -1,5 +1,5 @@
 <template>
-    <div class="grid gap-4 container">
+    <div class="grid gap-4">
         <Card v-for="[id, profile] in profileStore.profiles" :key="id" style="overflow: hidden">
             <template #header>
                 <SitePreview site-url="https://uat.nxp.nz" />
@@ -32,7 +32,7 @@ const deleteProfile = (id: string) => {
 </script>
 
 <style scoped>
-div.container {
+div.grid {
     grid-template-columns: repeat(auto-fill, 15rem);
 }
 </style>
