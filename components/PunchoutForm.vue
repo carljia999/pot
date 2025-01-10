@@ -48,8 +48,17 @@
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <div class="flex px-16">
+      <div class="flex px-16 gap-4">
         <Button type="submit" class="w-24" :loading :disabled="!$form.valid" label="Submit" />
+        <InputText
+            v-model="profileName"
+            placeholder="Enter profile name (Default: URL + Username)"
+        />
+        <Button
+            type="button"
+            label="Save as Profile"
+            @click="saveProfile($form)"
+        />
       </div>
     </Form>
   </div>
@@ -65,6 +74,8 @@ const toast = useToast();
 const loading = ref(false);
 // Active tab value
 const activeTab = ref('0');
+const profileName = ref('');
+
 // XML validation function
 const validateXml = async (value: string) => {
   try {
@@ -117,4 +128,24 @@ async function submitForm({ values }: FormSubmitEvent) {
   }
   loading.value = false;
 }
+
+const { addProfile } = useProfileStore();
+const saveProfile = (values: Record<string, any>) => {
+  const defaultName = () =>
+      activeTab.value === '0' ? `${values.punchoutUrl.value} - ${values.username.value}` : 'Custom Profile';
+
+  const saved: Record<string, any> = {};
+  for (const key in values) {
+    if (key != 'valid') {
+      saved[key] = values[key].value;
+    }
+  }
+  const name = profileName.value || defaultName();
+  addProfile(name, saved);
+  toast.add({
+    severity: 'success',
+    summary: 'Profile Saved',
+    life: 3000,
+  });
+};
 </script>
