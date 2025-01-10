@@ -14,6 +14,12 @@
           <TabPanel value="0">
             <div class="flex flex-col gap-2 w-96">
               <div class="flex flex-col gap-1">
+                <InputText name="punchoutUrl" type="url" placeholder="Punchout URL" />
+                <Message v-if="$form.punchoutUrl?.invalid" severity="error" size="small">
+                  {{ $form.punchoutUrl.error.message }}
+                </Message>
+              </div>
+              <div class="flex flex-col gap-1">
                 <InputText name="username" type="text" placeholder="Username" />
                 <Message v-if="$form.username?.invalid" severity="error" size="small">
                   {{ $form.username.error.message }}
@@ -23,12 +29,6 @@
                 <InputText name="password" type="text" placeholder="Password" />
                 <Message v-if="$form.password?.invalid" severity="error" size="small">
                   {{ $form.password.error.message }}
-                </Message>
-              </div>
-              <div class="flex flex-col gap-1">
-                <InputText name="punchoutUrl" type="url" placeholder="Punchout URL" />
-                <Message v-if="$form.punchoutUrl?.invalid" severity="error" size="small">
-                  {{ $form.punchoutUrl.error.message }}
                 </Message>
               </div>
             </div>
