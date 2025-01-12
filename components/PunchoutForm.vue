@@ -48,15 +48,22 @@
           </TabPanel>
         </TabPanels>
       </Tabs>
-      <div class="flex px-16 gap-4">
-        <Button type="submit" class="w-24" :loading :disabled="!$form.valid" label="Submit" />
+      <div class="flex px-4 gap-4">
+        <Button type="submit" class="w-30" :loading :disabled="!$form.valid" label="Punch Out" />
         <InputText
             v-model="profileName"
-            placeholder="Enter profile name (Default: URL + Username)"
+            class="flex-grow"
+            size="small"
+            placeholder="Profile name (e.g. URL + Username)"
         />
         <Button
+            v-tooltip="'Save as Profile'"
             type="button"
-            label="Save as Profile"
+            icon="pi pi-save"
+            aria-label="Save as Profile"
+            size="small"
+            severity="info"
+            :disabled="!$form.valid"
             @click="saveProfile($form)"
         />
       </div>
@@ -131,8 +138,17 @@ async function submitForm({ values }: FormSubmitEvent) {
 
 const { addProfile } = useProfileStore();
 const saveProfile = (values: Record<string, any>) => {
-  const defaultName = () =>
-      activeTab.value === '0' ? `${values.punchoutUrl.value} - ${values.username.value}` : 'Custom Profile';
+  const defaultName = () => {
+    if (!values.punchoutUrl.value || !values.username.value) {
+      return 'Custom Profile';
+    }
+    try {
+      const site = new URL(values.punchoutUrl.value).hostname;
+      return `${site} - ${values.username.value}`
+    } catch {
+      return 'Custom Profile';
+    }
+  }
 
   const saved: Record<string, any> = {};
   for (const key in values) {

@@ -5,12 +5,13 @@
                 <SitePreview site-url="https://uat.nxp.nz" />
                 <!--<img alt="user header" src="https://demofree.sirv.com/nope-not-here.jpg?w=150" />-->
             </template>
-            <template #title>{{ profile.name }}</template>
-            <template #subtitle>{{ profile.id }}</template>
+            <template #subtitle>{{ profile.name }}</template>
             <template #footer>
                 <div class="flex gap-4 mt-1">
                     <Button label="Punch Out" class="w-full" />
-                    <Button icon="pi pi-times" severity="danger" class="p-button-sm"
+                    <Button
+                        v-tooltip="'Delete this profile'"
+                        icon="pi pi-times" severity="danger" size="small"
                         @click="deleteProfile(profile.id)" />
                 </div>
             </template>
