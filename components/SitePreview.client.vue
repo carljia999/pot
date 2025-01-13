@@ -17,8 +17,9 @@ interface ApiError {
     statusCode?: number
 }
 
+const { sitePreviewCache : cache, saveCache } = useSitePreviewCache()
 const url = computed(() => new URL(siteUrl).origin)
-const screenshotUrl = ref('https://demofree.sirv.com/nope-not-here.jpg?w=250')
+const screenshotUrl = ref(cache[url.value] || 'https://demofree.sirv.com/nope-not-here.jpg?w=250')
 const isLoading = ref(false)
 const error = ref('')
 
@@ -49,11 +50,12 @@ const captureScreenshot = async () => {
             useCORS: true,
             width: 1024,
             height: 768,
-            scale: 1,
+            scale: 0.4,
         })
 
         screenshotUrl.value = canvas.toDataURL()
         document.body.removeChild(container)
+        saveCache(url.value, screenshotUrl.value)
     } catch (err) {
         const apiError = err as ApiError
         error.value = `Error capturing screenshot: ${apiError.message || 'Unknown error occurred'}`
@@ -63,7 +65,7 @@ const captureScreenshot = async () => {
 }
 
 onMounted(() => {
-    if (siteUrl) {
+    if (siteUrl && !cache[siteUrl]) {
         captureScreenshot()
     }
 })
