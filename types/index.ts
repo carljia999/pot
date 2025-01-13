@@ -6,11 +6,4 @@ export interface PunchoutRequest {
     replaceHook: boolean;
 }
 
-export interface PunchoutResponse {
-    success: boolean;
-    url?: string;
-    outputXML: string;
-    inputXML: string;
-    postedXML: string;
-    serverVariables: Record<string, any>;
-}
+export type FormValues = Record<string, unknown>;

@@ -72,7 +72,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { FormSubmitEvent } from '@primevue/forms';
+import type { FormSubmitEvent, FormFieldState } from '@primevue/forms';
 import { z } from 'zod';
 import { parseStringPromise } from 'xml2js';
 import { zodResolver } from '@primevue/forms/resolvers/zod';
@@ -112,32 +112,12 @@ const advancedSchema = z.object({
 const resolver = computed(() => zodResolver(activeTab.value === '0' ? basicSchema : advancedSchema));
 
 async function submitForm({ values }: FormSubmitEvent) {
-  loading.value = true;
-  try {
-    const response = await $fetch<{ statusCode: number, data: string, message?: string }>('/api/cxml', {
-      method: 'POST',
-      redirect: 'manual',
-      body: values,
-    });
-
-    const form = useMyFormData();
-    if (response.statusCode === 200) {
-      form.value['cXML'] = response.data;
-      await navigateTo('/cxml/punch');
-    }
-    else {
-      toast.add({ severity: 'info', summary: 'error', detail: response.message, life: 3000 });
-      console.error(response.message);
-    }
-  } catch (error) {
-    toast.add({ severity: 'info', summary: 'error', detail: error, life: 3000 });
-    console.error(error);
-  }
-  loading.value = false;
+  const submitFormInner = useSubmitForm(loading, toast);
+  submitFormInner(values);
 }
 
 const { addProfile } = useProfileStore();
-const saveProfile = (values: Record<string, any>) => {
+const saveProfile = (values: Record<string, FormFieldState>) => {
   const defaultName = () => {
     if (!values.punchoutUrl.value || !values.username.value) {
       return 'Custom Profile';
@@ -150,7 +130,7 @@ const saveProfile = (values: Record<string, any>) => {
     }
   }
 
-  const saved: Record<string, any> = {};
+  const saved: Record<string, unknown> = {};
   for (const key in values) {
     if (key != 'valid') {
       saved[key] = values[key].value;

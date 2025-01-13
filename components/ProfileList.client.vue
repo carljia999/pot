@@ -2,13 +2,13 @@
     <div class="grid gap-4">
         <Card v-for="[id, profile] in profileStore.profiles" :key="id" style="overflow: hidden">
             <template #header>
-                <SitePreview site-url="https://uat.nxp.nz" />
+                <SitePreview site-url="https://www.nxp.nz" />
                 <!--<img alt="user header" src="https://demofree.sirv.com/nope-not-here.jpg?w=150" />-->
             </template>
             <template #subtitle>{{ profile.name }}</template>
             <template #footer>
                 <div class="flex gap-4 mt-1">
-                    <Button label="Punch Out" class="w-full" />
+                    <Button as="router-link" :to="`/cxml/go?p=${profile.id}`" label="Punch Out" class="w-full" />
                     <Button
                         v-tooltip="'Delete this profile'"
                         icon="pi pi-times" severity="danger" size="small"
