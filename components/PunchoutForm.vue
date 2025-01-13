@@ -108,6 +108,10 @@ const advancedSchema = z.object({
   replacingUrl: z.boolean(),
 });
 
+type BasicProfile = z.infer<typeof basicSchema>;
+type AdvancedProfile = z.infer<typeof advancedSchema>;
+type ProfileType = BasicProfile | AdvancedProfile;
+
 // Dynamic schema resolver
 const resolver = computed(() => zodResolver(activeTab.value === '0' ? basicSchema : advancedSchema));
 
@@ -116,28 +120,44 @@ async function submitForm({ values }: FormSubmitEvent) {
   submitFormInner(values);
 }
 
-const { addProfile } = useProfileStore();
-const saveProfile = (values: Record<string, FormFieldState>) => {
-  const defaultName = () => {
-    if (!values.punchoutUrl.value || !values.username.value) {
-      return 'Custom Profile';
-    }
-    try {
-      const site = new URL(values.punchoutUrl.value).hostname;
-      return `${site} - ${values.username.value}`
-    } catch {
-      return 'Custom Profile';
-    }
+const getProfileCredentials = async (profile: ProfileType): Promise<{ url: string; user: string }> => {
+  if ('punchoutUrl' in profile) {
+    return {
+      url: profile.punchoutUrl,
+      user: profile.username,
+    };
   }
+  const extracted = await extractPunchoutUrl(profile.cXMLInput);
+  return {
+    url: extracted.punchoutUrl,
+    user: extracted.punchoutUser,
+  };
+};
 
-  const saved: Record<string, unknown> = {};
+const createProfileName = (url: string, user: string): string => {
+  if (!url || !user) return 'Custom Profile';
+
+  try {
+    return `${new URL(url).hostname} - ${user}`;
+  } catch {
+    return 'Custom Profile';
+  }
+};
+
+const { addProfile } = useProfileStore();
+const saveProfile = async (values: Record<string, FormFieldState>) => {
+  const fields: Record<string, unknown> = {};
   for (const key in values) {
     if (key != 'valid') {
-      saved[key] = values[key].value;
+      fields[key] = values[key].value;
     }
   }
-  const name = profileName.value || defaultName();
-  addProfile(name, saved);
+  const schema = activeTab.value === '0' ? basicSchema : advancedSchema;
+  const profileData = await schema.parseAsync(fields);
+  const { url, user } = await getProfileCredentials(profileData);
+
+  const name = profileName.value || createProfileName(url, user);
+  addProfile(name, url, profileData);
   toast.add({
     severity: 'success',
     summary: 'Profile Saved',

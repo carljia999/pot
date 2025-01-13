@@ -1,3 +1,5 @@
+import { Parser } from 'xml2js';
+
 export function createXML(payload: string, date: string, username: string, password: string, punchoutUrl: string, hookUrl: string): string {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE cXML SYSTEM "http://xml.cxml.org/schemas/cXML/1.1.007/cXML.dtd">
@@ -43,3 +45,14 @@ export function createXML(payload: string, date: string, username: string, passw
 </cXML>`
 }
 
+export async function extractPunchoutUrl(rawXml: string): Promise<{punchoutUrl:string, punchoutUser:string}> {
+    const parser = new Parser({explicitArray: false});
+    try {
+        const result = await parser.parseStringPromise(rawXml);
+        const punchoutUrl = result.cXML.Request.PunchOutSetupRequest.SupplierSetup.URL;
+        const punchoutUser = result.cXML.Header.From.Credential.Identity;
+        return {punchoutUrl, punchoutUser};
+    } catch {
+        return {punchoutUrl: '', punchoutUser: ''};
+    }
+}

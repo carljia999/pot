@@ -5,7 +5,7 @@
 <script setup lang="ts">
 import html2canvas from 'html2canvas'
 
-const { siteUrl = '' } = defineProps<{ siteUrl?: string }>()
+const { siteUrl } = defineProps<{ siteUrl: string }>()
 
 interface FetchPageResponse {
     html: string
@@ -24,11 +24,6 @@ const isLoading = ref(false)
 const error = ref('')
 
 const captureScreenshot = async () => {
-    if (!url.value) {
-        error.value = 'Please enter a URL'
-        return
-    }
-
     try {
         isLoading.value = true
         error.value = ''
@@ -65,7 +60,7 @@ const captureScreenshot = async () => {
 }
 
 onMounted(() => {
-    if (siteUrl && !cache[siteUrl]) {
+    if (url.value && !cache[url.value]) {
         captureScreenshot()
     }
 })

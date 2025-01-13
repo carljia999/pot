@@ -2,8 +2,7 @@
     <div class="grid gap-4">
         <Card v-for="[id, profile] in profileStore.profiles" :key="id" style="overflow: hidden">
             <template #header>
-                <SitePreview site-url="https://www.nxp.nz" />
-                <!--<img alt="user header" src="https://demofree.sirv.com/nope-not-here.jpg?w=150" />-->
+                <SitePreview :site-url="profile.previewUrl" />
             </template>
             <template #subtitle>{{ profile.name }}</template>
             <template #footer>
