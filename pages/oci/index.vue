@@ -5,10 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-function handleSubmit(formData: { punchoutUrl: string; username: string; password: string }) {
-  // Handle form submission logic here
-  // You can call the API endpoint for OCI punchout with formData
-}
+
 </script>
 
 <style scoped>

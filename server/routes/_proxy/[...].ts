@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3'
 import { defu } from 'defu'
+import { FetchError } from 'ofetch'
 
 export default defineEventHandler(async (event: H3Event) => {
   try {
@@ -78,10 +79,13 @@ export default defineEventHandler(async (event: H3Event) => {
 
     // Return the response
     return response._data
-  } catch (error: any) {
-    throw createError({
-      statusCode: error.statusCode || 500,
-      message: error.message || 'Proxy request failed'
-    })
+  } catch (error: unknown) {
+    if (error instanceof FetchError) {
+      throw createError({
+        statusCode: error.statusCode || 500,
+        message: error.message || 'Proxy request failed'
+      })
+    }
+    throw error
   }
 })
