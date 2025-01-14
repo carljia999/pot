@@ -3,12 +3,12 @@
         <Toolbar pt:center:class="gap-2">
             <template #start>
                 <NuxtLink href="/">
-                    <i class="pi pi-shop text-3xl text-teal-700"/>
+                    <img src="/android-chrome-192x192.png" alt="Logo" class="w-9 h-9">
                 </NuxtLink>
             </template>
 
             <template #center>
-                <h1 class="text-xl font-bold">Punchout Tester</h1>
+                <h1 class="text-xl font-bold">Punch out Tester</h1>
                 <NuxtLink href="/cxml">
                     <img src="/cxml-32x32.png" alt="cXML" class="w-7 h-7">
                 </NuxtLink>
