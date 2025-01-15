@@ -8,13 +8,13 @@ import { Parser, Builder } from 'xml2js';
 
 export default defineEventHandler(async (event) => {
     const body = await readBody(event);
-    const { username, password, rawXml, replacing } = body;
+    const { username, password, cXMLInput: rawXml, replacingUrl: replacing } = body;
 
     let cxml = '';
     let punchoutUrl = body.punchoutUrl;
     if (rawXml) {
         const parser = new Parser({explicitArray: false});
-        try {        
+        try {
             const result = await parser.parseStringPromise(rawXml);
             punchoutUrl = result.cXML.Request.PunchOutSetupRequest.SupplierSetup.URL;
             if (replacing) {
