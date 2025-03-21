@@ -8,7 +8,7 @@
 <script setup lang="ts">
 const route = useRoute();
 const loading = ref(false);
-const submitForm = useSubmitForm(loading, useToast());
+const submitForm = useCxmlSubmitForm(loading, useToast());
 
 onMounted(() => {
     const profileStore = useProfileStore();

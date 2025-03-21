@@ -1,6 +1,6 @@
 import type { ToastServiceMethods } from 'primevue/toastservice';
 
-export function useSubmitForm(loading: Ref<boolean, boolean>, toast: ToastServiceMethods) {
+export function useCxmlSubmitForm(loading: Ref<boolean, boolean>, toast: ToastServiceMethods) {
     return async function submitForm(values: Record<string, unknown>) {
         loading.value = true;
         try {

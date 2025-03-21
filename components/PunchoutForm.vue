@@ -116,7 +116,7 @@ type ProfileType = BasicProfile | AdvancedProfile;
 const resolver = computed(() => zodResolver(activeTab.value === '0' ? basicSchema : advancedSchema));
 
 async function submitForm({ values }: FormSubmitEvent) {
-  const submitFormInner = useSubmitForm(loading, toast);
+  const submitFormInner = useCxmlSubmitForm(loading, toast);
   submitFormInner(values);
 }
 
