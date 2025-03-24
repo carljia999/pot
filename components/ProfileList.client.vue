@@ -1,13 +1,13 @@
 <template>
     <div class="grid gap-4">
-        <Card v-for="[id, profile] in profileStore.profiles" :key="id" style="overflow: hidden">
+        <Card v-for="profile in getProfiles(props.type)" :key="profile.id" style="overflow: hidden">
             <template #header>
                 <SitePreview :site-url="profile.previewUrl" />
             </template>
             <template #subtitle>{{ profile.name }}</template>
             <template #footer>
                 <div class="flex gap-4 mt-1">
-                    <Button as="router-link" :to="`/cxml/go?p=${profile.id}`" label="Punch Out" class="w-full" />
+                    <Button as="router-link" :to="`/${profile.type}/go?p=${profile.id}`" label="Punch Out" class="w-full" />
                     <Button
                         v-tooltip="'Delete this profile'"
                         icon="pi pi-times" severity="danger" size="small"
@@ -21,7 +21,10 @@
 <script setup lang="ts">
 const toast = useToast();
 const profileStore = useProfileStore();
-const { loadProfiles } = profileStore
+const { loadProfiles, getProfiles } = profileStore
+const props = defineProps<{
+  type: string
+}>()
 
 onMounted(loadProfiles);
 

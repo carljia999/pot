@@ -4,6 +4,7 @@ interface Profile {
     id: string;
     name: string;
     previewUrl: string;
+    type: string;
     data: Record<string, unknown>;
 }
 
@@ -19,6 +20,10 @@ export const useProfileStore = defineStore('profile', () => {
         }
     };
 
+    const getProfiles = (type: string) => {
+        return Array.from(profiles.value.values()).filter(profile => profile.type === type);
+    };
+
     // Save profiles to localStorage
     const saveProfiles = () => {
         if (import.meta.client) {
@@ -28,9 +33,9 @@ export const useProfileStore = defineStore('profile', () => {
     };
 
     // Add a new profile
-    const addProfile = (profileName: string, previewUrl: string, profileData: Record<string, unknown>) => {
+    const addProfile = (profileName: string, previewUrl: string, profileData: Record<string, unknown>, type: string = 'cxml') => {
         const id = uuidv4();
-        const profile: Profile = { id, previewUrl, name: profileName, data: profileData };
+        const profile: Profile = { id, previewUrl, name: profileName, data: profileData, type };
         profiles.value.set(id, profile);
         saveProfiles();
     };
@@ -45,6 +50,7 @@ export const useProfileStore = defineStore('profile', () => {
 
     return {
         profiles,
+        getProfiles,
         addProfile,
         deleteProfile,
         loadProfiles,

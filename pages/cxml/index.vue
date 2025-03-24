@@ -4,7 +4,7 @@
       <PunchoutForm/>
     </Panel>
     <Panel header="Saved Profiles" class="flex-grow">
-      <ProfileList/>
+      <ProfileList type="cxml"/>
     </Panel>
   </div>
 </template>
