@@ -27,7 +27,7 @@ export function createXML(payload: string, date: string, username: string, passw
         <PunchOutSetupRequest operation="create">
             <BuyerCookie>${payload}</BuyerCookie>
             <Extrinsic name="User">xxx-008</Extrinsic>
-            <Extrinsic name="UserEmail">john.spence@ce.com.au</Extrinsic>
+            <Extrinsic name="UserEmail">john.spence@example.com</Extrinsic>
             <Extrinsic name="FirstName">John</Extrinsic>
             <Extrinsic name="LastName">Spence</Extrinsic>
             <BrowserFormPost>
@@ -35,7 +35,7 @@ export function createXML(payload: string, date: string, username: string, passw
             </BrowserFormPost>
             <Contact role="endUser">
                 <Name xml:lang="en-US">John Spence</Name>
-                <Email>john.spence@ce.com.au</Email>
+                <Email>john.spence@example.com</Email>
             </Contact>
             <SupplierSetup>
                 <URL>${punchoutUrl}</URL>
