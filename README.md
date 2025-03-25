@@ -1,6 +1,11 @@
-# Nuxt Minimal Starter
+# Punch out tester
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+PunchOut is a collection of standards that facilitate integration between suppliers eCommerce sites and their buyer’s eProcurement systems. The two most well-known stardards
+are OCI and cXML.
+
+This site allows users to simulate punchout to suppliers eCommerce sites and inspect the data in and out. I use this site to test changes to punchout gateway and eCommerce site.
+
+The project [SimFre/Punchout](https://github.com/SimFre/Punchout) inspired the development. The tech stack includes Nuxt/Vue/Tailwind/TypeScript.
 
 ## Setup
 
